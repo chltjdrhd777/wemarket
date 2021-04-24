@@ -7,6 +7,9 @@ import mongoose from 'mongoose';
 import path from 'path';
 import multer from 'multer';
 
+//# paths
+import userRoutes from 'routes/userRoutes';
+
 //initializing app
 const app = express();
 app.use(cors({ origin: true, credentials: true }));
@@ -32,9 +35,7 @@ mongoose
     .catch((err) => console.log(err));
 
 //routes
-app.use('/', (req, res) => {
-    return res.status(200).json('ok basic serer is done with eslint,prettier,vscode settings !!!');
-});
+app.use('/user', userRoutes);
 
 //PORT
 const PORT = process.env.PORT || 8080;

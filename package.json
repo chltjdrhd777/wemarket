@@ -1,0 +1,21 @@
+{
+  "name": "funtalk",
+  "version": "1.0.0",
+  "scripts": {
+    "deploy": "git add . && git commit -m update && git push origin master"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chltjdrhd777/funtalk_service.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chltjdrhd777/funtalk_service/issues"
+  },
+  "homepage": "https://github.com/chltjdrhd777/funtalk_service#readme",
+  "dependencies": {
+    "concurrently": "^6.0.2"
+  }
+}
