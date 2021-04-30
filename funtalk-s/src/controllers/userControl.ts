@@ -1,11 +1,11 @@
-import { UserDocType } from './../models/models.types.d';
-import { Request, Response, NextFunction } from 'express';
+import { UserDocType } from 'models/models.types.d';
+import { Request, Response } from 'express';
 import User from 'models/userModel';
-import { Register_Request, Verified_userData } from './userCtr.types';
+import { Register_Request, Verified_userData } from 'controllers/userCtr.types';
 import bcrypt from 'bcrypt';
 import { user_related } from 'utilities';
 
-const { generateToken, token_verify } = user_related;
+const { generateToken_access, generateToken_refersh, verifyToken_refresh } = user_related;
 
 const register = async (req: Register_Request, res: Response) => {
     try {
@@ -31,11 +31,12 @@ const register = async (req: Register_Request, res: Response) => {
         await newUser.save();
 
         //5. generate token for strong authentification
-        const token_access = generateToken({ id: newUser._id, name: newUser.name }, process.env.ACCESS_TOKEN_SECRET as string, '1h');
-        const token_refresh = generateToken({ id: newUser._id, name: newUser.name }, process.env.REFRESH_TOKEN_SECRET as string, '10d');
+
+        const token_access = generateToken_access({ id: newUser._id, name: newUser.name });
+        const token_refresh = generateToken_refersh({ id: newUser._id, name: newUser.name });
 
         //6. attach token_refresh to client
-        res.cookie('token_refresh', token_refresh, { httpOnly: true, path: '/user/token_refresh' });
+        res.cookie('token_refresh', token_refresh, { httpOnly: true, path: '/user/token_refresh', secure: true });
         res.json({ token_access });
     } catch (err) {
         return res.status(500).json({ msg: err.message });
@@ -51,9 +52,9 @@ const token_refresh = (req: Request, res: Response) => {
         if (!tokenRefresh_from_client) return res.status(400).json({ msg: 'please log in or register' });
 
         //3. token verification
-        const verification = token_verify(tokenRefresh_from_client) as Verified_userData;
+        const verification = verifyToken_refresh(tokenRefresh_from_client) as Verified_userData;
         if (verification) {
-            const token_access = generateToken({ id: verification.id, name: verification.name }, process.env.ACCESS_TOKEN_SECRET as string, '1h');
+            const token_access = generateToken_access({ id: verification.id, name: verification.name });
             res.json({ token_access });
         }
     } catch (err) {
