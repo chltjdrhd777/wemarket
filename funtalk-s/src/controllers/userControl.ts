@@ -1,13 +1,13 @@
 import { UserDocType } from 'models/models.types.d';
 import { Request, Response } from 'express';
 import User from 'models/userModel';
-import { Register_Request, Verified_userData } from 'controllers/userCtr.types';
+import { User_Request, Verified_userData } from 'controllers/userCtr.types';
 import bcrypt from 'bcrypt';
 import { user_related } from 'utilities';
 
 const { generateToken_access, generateToken_refersh, verifyToken_refresh } = user_related;
 
-const register = async (req: Register_Request, res: Response) => {
+const register = async (req: User_Request, res: Response) => {
     try {
         const { name, email, password } = req.body;
 
@@ -43,6 +43,29 @@ const register = async (req: Register_Request, res: Response) => {
     }
 };
 
+const login = async (req: User_Request, res: Response) => {
+    try {
+        //1. get user email & passowrd
+        const { email, password } = req.body;
+
+        //2. user find
+        const target_user = await User.findOne({ email });
+        if (!target_user) return res.status(400).json({ msg: 'there is no user' });
+
+        //3. password encoding
+        const isMatch = await bcrypt.compare(password, target_user.password);
+        if (!isMatch) return res.status(400).json({ msg: 'wrong password' });
+
+        //4. permission => send tokens
+        const token_access = generateToken_access({ id: target_user._id, name: target_user.name });
+        const token_refresh = generateToken_refersh({ id: target_user._id, name: target_user.name });
+        res.cookie('token_refresh', token_refresh, { httpOnly: true, path: '/user/token_refresh', secure: true });
+        res.json({ token_access });
+    } catch (err) {
+        res.status(500).json({ msg: err.message });
+    }
+};
+
 const token_refresh = (req: Request, res: Response) => {
     try {
         //1. get user token_refresh
@@ -62,4 +85,4 @@ const token_refresh = (req: Request, res: Response) => {
     }
 };
 
-export { register, token_refresh };
+export { register, token_refresh, login };

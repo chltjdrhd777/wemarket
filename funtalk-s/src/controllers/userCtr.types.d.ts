@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { UserDocType } from 'models/models.types';
 
-export interface Register_Request extends Request<{}, {}, UserDocType> {}
+export interface User_Request extends Request<{}, {}, UserDocType> {}
 
 export interface Verified_userData {
     id: string;
