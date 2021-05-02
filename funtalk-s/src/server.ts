@@ -9,6 +9,7 @@ import multer from 'multer';
 
 //# paths
 import userRoutes from 'routes/userRoutes';
+import favoriteRoutes from 'routes/favoriteRoutes';
 
 //initializing app
 const app = express();
@@ -36,6 +37,7 @@ mongoose
 
 //routes
 app.use('/user', userRoutes);
+app.use('/api', favoriteRoutes);
 
 //PORT
 const PORT = process.env.PORT || 8080;

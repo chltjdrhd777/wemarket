@@ -4,12 +4,20 @@
 
 import { Document } from 'mongoose';
 
-export interface UserDocType {
+//1. User
+export interface User_DocType {
     name: string;
     email: string;
     password: string;
-    role?: number;
+    role?: number | string;
     favoritList?: [];
 }
 
-export interface D_UserDocType extends Document, UserDocType {}
+export interface D_UserDocType extends Document, User_DocType {}
+
+//2. Favorite
+export interface FavoritList_DocType {
+    name: string;
+}
+
+export interface D_FavoritList_Doctype extends Document, FavoritList_DocType {}

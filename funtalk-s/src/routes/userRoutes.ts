@@ -1,10 +1,14 @@
 import { Router } from 'express';
-import { login, register, token_refresh } from 'controllers/userControl';
+import { register, login, logout, token_refresh, getUser } from 'controllers/userControl';
+import { auth } from 'middleware/auth';
 
 const router = Router();
 
 //get
 router.get('/token_refresh', token_refresh);
+router.get('/logout', logout);
+router.get('/auth', auth);
+router.get('/getUser', auth, getUser);
 
 //post
 router.post('/register', register);
