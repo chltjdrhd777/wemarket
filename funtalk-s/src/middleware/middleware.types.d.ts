@@ -5,6 +5,6 @@ export interface FavoriteList_docType {
     name: string;
 }
 
-export interface Custom_Request<T = {}> extends Request<{}, {}, T> {
+export interface Custom_Request<P = {}, Q = {}, T = {}> extends Request<P, Q, T> {
     user?: Verified_userData;
 }
