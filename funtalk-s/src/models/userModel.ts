@@ -26,6 +26,8 @@ const user_schemaType: { [key: string]: SchemaTypeOptions<unknown> } = {
     }
 };
 
-const user_schema = new mongoose.Schema<D_UserDocType, Model<D_UserDocType>>(user_schemaType, { timestamps: true });
+const user_schema = new mongoose.Schema<D_UserDocType, Model<D_UserDocType>>(user_schemaType, {
+    timestamps: true
+});
 
 export default mongoose.model('User', user_schema);

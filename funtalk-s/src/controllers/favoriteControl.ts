@@ -15,7 +15,10 @@ const get_favoritList = async (req: Request, res: Response) => {
     }
 };
 
-const create_favoriteList = async (req: Custom_Request<FavoritList_DocType>, res: Response) => {
+const create_favoriteList = async (
+    req: Custom_Request<{}, {}, FavoritList_DocType>,
+    res: Response
+) => {
     try {
         //1. get the title name
         const { name } = req.body;
@@ -35,4 +38,28 @@ const create_favoriteList = async (req: Custom_Request<FavoritList_DocType>, res
     }
 };
 
-export { get_favoritList, create_favoriteList };
+const delete_favoriteList = async (req: Custom_Request<{ id: string }>, res: Response) => {
+    try {
+        //find favorite by Object id and delete it
+        await Favorite_list.findByIdAndDelete(req.params.id);
+        res.json({ msg: 'deleted successfully' });
+    } catch (err) {
+        err_response(res, err);
+    }
+};
+
+const update_favoriteList = async (
+    req: Custom_Request<{ id: string }, {}, FavoritList_DocType>,
+    res: Response
+) => {
+    try {
+        //receive change data and apply this to favorite found by id
+        const { name } = req.body;
+        await Favorite_list.findByIdAndUpdate(req.params.id, { name });
+        res.json({ msg: 'updated successfully' });
+    } catch (err) {
+        err_response(res, err);
+    }
+};
+
+export { get_favoritList, create_favoriteList, delete_favoriteList, update_favoriteList };

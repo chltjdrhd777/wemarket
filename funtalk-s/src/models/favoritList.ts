@@ -10,6 +10,9 @@ const favoritList_schemaType: { [key: string]: SchemaTypeOptions<unknown> } = {
     }
 };
 
-const favoriteList_schema = new mongoose.Schema<D_FavoritList_Doctype, Model<D_FavoritList_Doctype>>(favoritList_schemaType, { timestamps: true });
+const favoriteList_schema = new mongoose.Schema<
+    D_FavoritList_Doctype,
+    Model<D_FavoritList_Doctype>
+>(favoritList_schemaType, { timestamps: true });
 
 export default mongoose.model('Favorite', favoriteList_schema);

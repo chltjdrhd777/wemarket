@@ -18,7 +18,8 @@ const register = async (req: User_Request, res: Response) => {
         if (userFind) return res.status(400).json({ msg: 'exist' });
 
         //2. password length
-        if (password.length < 6) return res.status(400).json({ msg: '[Password] : short(less than 6)' });
+        if (password.length < 6)
+            return res.status(400).json({ msg: '[Password] : short(less than 6)' });
 
         //3. password incoding
         const password_hash = await bcrypt.hash(password, 10);
@@ -40,7 +41,11 @@ const register = async (req: User_Request, res: Response) => {
         const token_refresh = generateToken_refersh({ id: newUser._id, name: newUser.name });
 
         //6. attach token_refresh to client
-        res.cookie('token_refresh', token_refresh, { httpOnly: true, path: '/user/token_refresh', secure: true });
+        res.cookie('token_refresh', token_refresh, {
+            httpOnly: true,
+            path: '/user/token_refresh',
+            secure: true
+        });
         res.json({ token_access });
     } catch (err) {
         err_response(res, err);
@@ -62,8 +67,14 @@ const login = async (req: User_Request, res: Response) => {
 
         //4. permission => send tokens
         const token_access = generateToken_access({ id: target_user._id, name: target_user.name });
-        const token_refresh = generateToken_refersh({ id: target_user._id, name: target_user.name });
-        res.cookie('token_refresh', token_refresh, { httpOnly: true, path: '/user/token_refresh' /* secure: true */ });
+        const token_refresh = generateToken_refersh({
+            id: target_user._id,
+            name: target_user.name
+        });
+        res.cookie('token_refresh', token_refresh, {
+            httpOnly: true,
+            path: '/user/token_refresh' /* secure: true */
+        });
         res.json({ token_access });
     } catch (err) {
         err_response(res, err);
@@ -102,7 +113,10 @@ const token_refresh = (req: Request, res: Response) => {
         //3. token_refresh verification
         const verification_token_refresh = verifyToken_refresh(token_refresh) as Verified_userData;
         if (verification_token_refresh) {
-            const token_access = generateToken_access({ id: verification_token_refresh.id, name: verification_token_refresh.name });
+            const token_access = generateToken_access({
+                id: verification_token_refresh.id,
+                name: verification_token_refresh.name
+            });
             res.json({ token_access });
         }
     } catch (err) {
