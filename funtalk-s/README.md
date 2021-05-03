@@ -8,11 +8,11 @@
 
 <!-- List -->
 
-- Express([more](https://expressjs.com/ko/))
-- Typescript([more](https://www.npmjs.com/package/typescript))
-- MongoDB([more](https://www.npmjs.com/package/mongodb))
-- Firebase([more](https://www.npmjs.com/package/firebase))
-- NodeJS([more](https://nodejs.org/ko/docs/))
+-   Express([more](https://expressjs.com/ko/))
+-   Typescript([more](https://www.npmjs.com/package/typescript))
+-   MongoDB([more](https://www.npmjs.com/package/mongodb))
+-   Firebase([more](https://www.npmjs.com/package/firebase))
+-   NodeJS([more](https://nodejs.org/ko/docs/))
 
 <br/>
 <br/>
