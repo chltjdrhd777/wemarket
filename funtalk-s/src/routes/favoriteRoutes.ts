@@ -1,16 +1,36 @@
 import { Router } from 'express';
-import { register, login, logout, token_refresh, getUser } from 'controllers/userControl';
 import { auth } from 'middleware/auth';
 import {
     create_favoriteList,
     delete_favoriteList,
     get_favoritList,
-    update_favoriteList
+    update_favoriteList,
+    upload_favoriteIMGs
 } from 'controllers/favoriteControl';
 import { auth_admin } from 'middleware/auth_admin';
+import { upload } from 'middleware/multer';
+import multer from 'multer';
 
+//////////////////////////////////////////////////////
 const router = Router();
 
+const multer_options: multer.Options = {
+    limits: {
+        fileSize: 1 * 1024 * 1024,
+        files: 3
+    }
+};
+
+//post
+router.post(
+    '/upload',
+    auth,
+    auth_admin,
+    upload(multer_options).array('favorite_imgs'),
+    upload_favoriteIMGs
+);
+
+//router.route
 router.route('/favoriteList').get(get_favoritList).post(auth, auth_admin, create_favoriteList);
 
 router

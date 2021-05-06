@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { commonly_used } from 'utilities';
 import Favorite_list from 'models/favoritList';
 import { FavoritList_DocType } from 'models/models.types';
+import { database_collection } from 'upload/firebase';
 
 const { err_response } = commonly_used;
 
@@ -22,6 +23,7 @@ const create_favoriteList = async (
     try {
         //1. get the title name
         const { name } = req.body;
+        if (!name) return res.status(400).json({ msg: 'name please' });
 
         //2. find one
         const target_favorite = await Favorite_list.findOne({ name });
@@ -55,6 +57,8 @@ const update_favoriteList = async (
     try {
         //receive change data and apply this to favorite found by id
         const { name } = req.body;
+        if (!name) return res.status(400).json({ msg: 'name plaese' });
+
         await Favorite_list.findByIdAndUpdate(req.params.id, { name });
         res.json({ msg: 'updated successfully' });
     } catch (err) {
@@ -62,4 +66,21 @@ const update_favoriteList = async (
     }
 };
 
-export { get_favoritList, create_favoriteList, delete_favoriteList, update_favoriteList };
+const upload_favoriteIMGs = async (req: Request, res: Response) => {
+    //1. get img array
+    const imgs = req.files as Express.Multer.File[];
+
+    //2. test to check if firebase server is connected
+    database_collection.doc().set({ message: 'work' });
+    const { buffer, ...rest } = imgs[0];
+
+    res.json({ img: rest });
+};
+
+export {
+    get_favoritList,
+    create_favoriteList,
+    delete_favoriteList,
+    update_favoriteList,
+    upload_favoriteIMGs
+};

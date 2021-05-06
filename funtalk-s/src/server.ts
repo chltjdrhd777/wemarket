@@ -4,8 +4,6 @@ import express from 'express';
 import cors from 'cors';
 import cookieparser from 'cookie-parser';
 import mongoose from 'mongoose';
-import path from 'path';
-import multer from 'multer';
 
 //# paths
 import userRoutes from 'routes/userRoutes';

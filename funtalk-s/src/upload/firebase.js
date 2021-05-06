@@ -17,4 +17,4 @@ const firebaseConfig = {
 
 const init = firebase.initializeApp(firebaseConfig);
 export const db = init.firestore();
-export const ref = db.collection('test');
+export const database_collection = db.collection('test');
