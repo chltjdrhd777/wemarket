@@ -459,13 +459,6 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
-"@types/firebase@^3.2.1":
-  "integrity" "sha512-G8XgHMu2jHlElfc2xVNaYP50F0qrqeTCjgeG1v5b4SRwWG4XKC4fCuEdVZuZaMRmVygcnbRZBAo9O7RsDvmkGQ=="
-  "resolved" "https://registry.npmjs.org/@types/firebase/-/firebase-3.2.1.tgz"
-  "version" "3.2.1"
-  dependencies:
-    "firebase" "*"
-
 "@types/json-schema@^7.0.3":
   "integrity" "sha512-cxWFQVseBm6O9Gbw1IWb8r6OS4OhSt3hPZLkFApLjM8TEXROBuQGLAH2i2gZpcXdLBIrpXuTDhH7Vbm1iXmNGA=="
   "resolved" "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.7.tgz"
@@ -1563,7 +1556,7 @@
     "micromatch" "^4.0.2"
     "resolve-dir" "^1.0.1"
 
-"firebase@*", "firebase@^8.5.0":
+"firebase@^8.5.0":
   "integrity" "sha512-dsyONwJ6y4f7OL7MjqzFtRwbkwkni2Xx4pubzPqSyYEjLfqJOrUNIhUf6U7G7fsTLqBI71hdRmUEMt/Bukl8QA=="
   "resolved" "https://registry.npmjs.org/firebase/-/firebase-8.5.0.tgz"
   "version" "8.5.0"
