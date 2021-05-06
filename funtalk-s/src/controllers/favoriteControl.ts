@@ -3,7 +3,8 @@ import { Request, Response } from 'express';
 import { commonly_used } from 'utilities';
 import Favorite_list from 'models/favoritList';
 import { FavoritList_DocType } from 'models/models.types';
-import { database_collection } from 'upload/firebase';
+import { bucket } from 'upload/firebase';
+import { v4 as uuid } from 'uuid';
 
 const { err_response } = commonly_used;
 
@@ -70,10 +71,14 @@ const upload_favoriteIMGs = async (req: Request, res: Response) => {
     //1. get img array
     const imgs = req.files as Express.Multer.File[];
 
-    //2. test to check if firebase server is connected
-    database_collection.doc().set({ message: 'work' });
-    const { buffer, ...rest } = imgs[0];
+    //2. test img target
+    const img = imgs[0];
+    const { buffer, originalname, ...rest } = img;
+    const bucketFile = bucket.file(originalname);
 
+    //ok final conclusion
+    //there is no proper way to deal with buffer to file store in firebase world
+    // the easiest way to do it is, from client, render their file to dataURL, and server utitlize it
     res.json({ img: rest });
 };
 
