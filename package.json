@@ -1,5 +1,5 @@
 {
-  "name": "funtalk",
+  "name": "wemarket",
   "version": "1.0.0",
   "scripts": {
     "deploy": "git add . && git commit -m update && git push origin master"
@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/chltjdrhd777/funtalk_service#readme",
   "dependencies": {
-    "concurrently": "^6.0.2"
+    "concurrently": "^6.0.2",
+    "react-paypal-button-v2": "^2.6.3"
   }
 }
