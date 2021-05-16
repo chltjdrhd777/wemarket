@@ -4,7 +4,6 @@ import express from 'express';
 import cors from 'cors';
 import cookieparser from 'cookie-parser';
 import mongoose from 'mongoose';
-import fileUpload from 'express-fileupload';
 
 //# paths
 import userRoutes from 'routes/userRoutes';
@@ -17,7 +16,6 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieparser());
-app.use(fileUpload({ useTempFiles: true }));
 dotenv.config();
 
 //initializing mongoose
