@@ -5,7 +5,8 @@
     "main": "src/server.ts",
     "scripts": {
         "start": "nodemon --exec ts-node -r tsconfig-paths/register --files src/server.ts",
-        "build": "rm -rf ./build/* && prettier --write ./src/* && tsc && tsc-alias"
+        "build": "rm -rf ./build/* && prettier --write ./src/* && tsc && tsc-alias",
+        "ts": "ts-node ./src/firebase/firebase.ts"
     },
     "author": "Anderson",
     "license": "ISC",
@@ -16,6 +17,7 @@
         "cors": "^2.8.5",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
+        "firebase-admin": "^9.8.0",
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^5.12.5",
         "multer": "^1.4.2",

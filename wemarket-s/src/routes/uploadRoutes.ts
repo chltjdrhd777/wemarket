@@ -7,15 +7,16 @@ import multer from 'multer';
 import { v4 as uuid } from 'uuid';
 import path from 'path';
 
+//without storage => automatically aware I want to use buffer rather than direactly file destination.
 const multerOptions: multer.Options = {
-    storage: multer.diskStorage({
-        destination: (req, file, cb) => {
-            cb(null, path.join(path.dirname(__dirname), 'upload'));
-        },
-        filename: (req, file, cb) => {
-            cb(null, `${uuid()}-${file.originalname}`);
-        }
-    }),
+    // storage: multer.diskStorage({
+    //     destination: (req, file, cb) => {
+    //         cb(null, path.join(path.dirname(__dirname), 'upload'));
+    //     },
+    //     filename: (req, file, cb) => {
+    //         cb(null, `${uuid()}-${file.originalname}`);
+    //     }
+    // }),
     limits: {
         fileSize: 2 * 1024 * 1024,
         files: 5

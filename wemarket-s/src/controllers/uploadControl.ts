@@ -5,33 +5,75 @@ import { commonly_used } from 'utilities';
 import { CategoryType } from 'models/models.types';
 import path from 'path';
 import fs from 'fs';
+import { firebaseFirestore, firebaseBucket } from 'firebase/firebase';
+import { v4 as uuid } from 'uuid';
 
 const { errResponse } = commonly_used;
 
-const uploadImages = (req: Request, res: Response) => {
+const uploadImages = async (req: Request, res: Response) => {
     try {
-        const files = req.files;
+        const files = req.files as Express.Multer.File[];
         const rootDir = path.join(path.dirname(__dirname));
 
         if (files.length === 0) {
             return res.status(400).json({ msg: 'not upload file or not valide fileType' });
         }
 
-        fs.readdir(path.join(rootDir, 'upload'), (err, files) => {
-            files.forEach((each) => {
-                const filePath = path.join(rootDir, `upload/${each}`);
+        //fireStore(DB) test
+        await firebaseFirestore.collection('test').doc('testDoc').set({
+            name: 'test data',
+            value: 'it is test message'
+        });
 
-                fs.unlink(filePath, (err) => {
-                    if (err) {
-                        return res.status(400).json('delete failed');
+        //firebase storage upload
+        const imgFiles = req.files as Express.Multer.File[];
+
+        const uploadImg = imgFiles.map((eachImg) => {
+            const imgName = `${uuid()}❤︎${eachImg.originalname}`;
+            const bucketReady = firebaseBucket.file(`categoryImgs/${imgName}`);
+
+            return bucketReady.save(eachImg.buffer, {
+                metadata: {
+                    contentType: eachImg.mimetype,
+                    metadata: {
+                        firebaseStorageDownloadTokens: uuid()
                     }
-
-                    console.log('success');
-                });
+                }
             });
         });
 
-        res.json({ fileinfo: files });
+        Promise.all(uploadImg);
+
+        //! if want to use direact file system, refer to things below
+        // const promiseImgs = files.map((eachFile) =>
+        //     firebaseBucket.upload(eachFile.path, {
+        //         destination: `categoryImg/${eachFile.filename}`,
+        //         metadata: {
+        //             metadata: {
+        //                 firebaseStorageDownloadTokens: uuid()
+        //             }
+        //         }
+        //     })
+        // );
+
+        // Promise.all(promiseImgs);
+
+        //files cleanup
+        // fs.readdir(path.join(rootDir, 'upload'), (err, files) => {
+        //     files.forEach((each) => {
+        //         const filePath = path.join(rootDir, `upload/${each}`);
+
+        //         fs.unlink(filePath, (err) => {
+        //             if (err) {
+        //                 return res.status(400).json('delete failed');
+        //             }
+
+        //             console.log('success');
+        //         });
+        //     });
+        // });
+
+        res.json({ fileinfo: 'work' });
     } catch (err) {
         errResponse(res, err);
     }
