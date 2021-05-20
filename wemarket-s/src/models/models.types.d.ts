@@ -15,9 +15,24 @@ export interface User_DocType {
 
 export interface D_UserDocType extends Document, User_DocType {}
 
-//2. Favorite
+//2. Category
 export interface CategoryType {
     name: string;
 }
 
 export interface CategoryDoctype extends Document, CategoryType {}
+
+//3. Product
+export interface ProductType {
+    productId: string;
+    title: string;
+    price: number;
+    description: string;
+    content: string;
+    images: string[];
+    checked: boolean;
+    sold: number;
+    category: string;
+}
+
+export interface productTypeDocument extends Document, ProductType {}

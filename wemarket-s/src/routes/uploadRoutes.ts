@@ -1,11 +1,9 @@
 import { auth_admin } from 'middleware/auth_admin';
 import { auth } from 'middleware/auth';
 import { Router } from 'express';
-import { uploadImages } from 'controllers/uploadControl';
+import { uploadImages, deleteImages } from 'controllers/uploadControl';
 import { upload } from 'middleware/multer';
 import multer from 'multer';
-import { v4 as uuid } from 'uuid';
-import path from 'path';
 
 //without storage => automatically aware I want to use buffer rather than direactly file destination.
 const multerOptions: multer.Options = {
@@ -35,6 +33,13 @@ const multerOptions: multer.Options = {
 
 const router = Router();
 
-router.post('/upload', auth, auth_admin, upload(multerOptions).array('categoryImg'), uploadImages);
+router.post(
+    '/imageUpload',
+    auth,
+    auth_admin,
+    upload(multerOptions).array('categoryImg'),
+    uploadImages
+);
+router.post('/imageDelete', auth, auth_admin, deleteImages);
 
 export default router;

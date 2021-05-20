@@ -9,6 +9,7 @@ import mongoose from 'mongoose';
 import userRoutes from 'routes/userRoutes';
 import categoryRoutes from 'routes/categoryRoutes';
 import uploadRoutes from 'routes/uploadRoutes';
+import productRoutes from 'routes/productRoutes';
 
 //initializing app
 const app = express();
@@ -38,6 +39,7 @@ mongoose
 app.use('/user', userRoutes);
 app.use('/api', categoryRoutes);
 app.use('/api', uploadRoutes);
+app.use('/api', productRoutes);
 
 //PORT
 const PORT = process.env.PORT || 8080;

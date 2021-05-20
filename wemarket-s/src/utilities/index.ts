@@ -1,6 +1,11 @@
 import { Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { NativeError } from 'mongoose';
+import fs from 'fs';
+import path from 'path';
+import { v4 as uuid } from 'uuid';
+
+const rootDir = path.join(path.dirname(__dirname));
 
 const commonly_used = {
     errResponse: (res: Response, err: NativeError) => {
@@ -17,4 +22,22 @@ const user_related = {
     verifyToken_refresh: (token: string) => jwt.verify(token, process.env.REFRESH_TOKEN_SECRET!)
 };
 
-export { user_related, commonly_used };
+const uploadingImage = {
+    cleanUploadFolder: (res: Response) => {
+        fs.readdir(path.join(rootDir, 'upload'), (err, files) => {
+            files.forEach((each) => {
+                const filePath = path.join(rootDir, `upload/${each}`);
+
+                fs.unlink(filePath, (err) => {
+                    if (err) {
+                        return res.status(400).json('delete failed');
+                    }
+
+                    console.log('success');
+                });
+            });
+        });
+    }
+};
+
+export { user_related, commonly_used, rootDir, uploadingImage };

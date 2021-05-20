@@ -1,10 +1,7 @@
+import { ImageInfo } from './controllers.types.d';
 import { CustomRequest } from './../middleware/middleware.types.d';
-import Category from 'models/categoryModel';
 import { Request, Response } from 'express';
 import { commonly_used } from 'utilities';
-import { CategoryType } from 'models/models.types';
-import path from 'path';
-import fs from 'fs';
 import { firebaseFirestore, firebaseBucket } from 'firebase/firebase';
 import { v4 as uuid } from 'uuid';
 
@@ -13,7 +10,6 @@ const { errResponse } = commonly_used;
 const uploadImages = async (req: Request, res: Response) => {
     try {
         const files = req.files as Express.Multer.File[];
-        const rootDir = path.join(path.dirname(__dirname));
 
         if (files.length === 0) {
             return res.status(400).json({ msg: 'not upload file or not valide fileType' });
@@ -29,7 +25,7 @@ const uploadImages = async (req: Request, res: Response) => {
         const imgFiles = req.files as Express.Multer.File[];
 
         const uploadImg = imgFiles.map((eachImg) => {
-            const imgName = `${uuid()}❤︎${eachImg.originalname}`;
+            const imgName = `${uuid()}+${eachImg.originalname}`;
             const bucketReady = firebaseBucket.file(`categoryImgs/${imgName}`);
 
             return bucketReady.save(eachImg.buffer, {
@@ -58,25 +54,20 @@ const uploadImages = async (req: Request, res: Response) => {
 
         // Promise.all(promiseImgs);
 
-        //files cleanup
-        // fs.readdir(path.join(rootDir, 'upload'), (err, files) => {
-        //     files.forEach((each) => {
-        //         const filePath = path.join(rootDir, `upload/${each}`);
-
-        //         fs.unlink(filePath, (err) => {
-        //             if (err) {
-        //                 return res.status(400).json('delete failed');
-        //             }
-
-        //             console.log('success');
-        //         });
-        //     });
-        // });
-
         res.json({ fileinfo: 'work' });
     } catch (err) {
         errResponse(res, err);
     }
 };
 
-export { uploadImages };
+const deleteImages = async (req: CustomRequest<{}, {}, ImageInfo>, res: Response) => {
+    try {
+        const { name } = req.body;
+        await firebaseBucket.file(`categoryImgs/${name}`).delete();
+        res.json({ msg: 'image deleted successfully' });
+    } catch (err) {
+        errResponse(res, err);
+    }
+};
+
+export { uploadImages, deleteImages };

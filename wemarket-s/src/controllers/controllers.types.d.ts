@@ -9,3 +9,7 @@ export interface Verified_userData {
     iat: number;
     exp: number;
 }
+
+export interface ImageInfo {
+    name: string;
+}
