@@ -13,3 +13,11 @@ export interface Verified_userData {
 export interface ImageInfo {
     name: string;
 }
+
+export interface ProductQueryString {
+    [key: string]: string;
+    productId: string;
+    page: string;
+    sort: string;
+    limit: string;
+}
